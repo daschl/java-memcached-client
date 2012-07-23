@@ -844,9 +844,10 @@ public class MemcachedConnection extends SpyThread {
         logRunException(e);
       } catch (IllegalStateException e) {
         logRunException(e);
-      } catch (Exception e) {
-    	logRunException(e);
-    	for (MemcachedNode qa : locator.getAll()) {
+      } catch (Throwable e) {
+    	//logRunException(e);
+    	System.out.println(e);
+    	  for (MemcachedNode qa : locator.getAll()) {
     		qa.setupResend();
     		try {
     			qa.getChannel().close();
