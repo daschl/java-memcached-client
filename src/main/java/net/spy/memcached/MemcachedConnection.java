@@ -846,7 +846,6 @@ public class MemcachedConnection extends SpyThread {
         logRunException(e);
       } catch (Exception e) {
     	logRunException(e);
-   
     	for (MemcachedNode qa : locator.getAll()) {
     		qa.setupResend();
     		try {
@@ -856,7 +855,6 @@ public class MemcachedConnection extends SpyThread {
     			logRunException(ex);
     		}
     	}
-    	
       }
     }
     getLogger().info("Shut down memcached client");
