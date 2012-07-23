@@ -825,6 +825,11 @@ public class MemcachedConnection extends SpyThread {
 
   /**
    * Infinitely loop processing IO.
+   * 
+   * If a different Exception (other than those explicitely catched here)
+   * is caught, then it is safe to assume that the connections are not in a
+   * safe state anymore. Therefore, all queued data is flushed and the connections
+   * are reopened again.
    */
   @Override
   public void run() {
@@ -839,6 +844,19 @@ public class MemcachedConnection extends SpyThread {
         logRunException(e);
       } catch (IllegalStateException e) {
         logRunException(e);
+      } catch (Exception e) {
+    	logRunException(e);
+   
+    	for (MemcachedNode qa : locator.getAll()) {
+    		qa.setupResend();
+    		try {
+    			qa.getChannel().close();
+    			qa.setChannel(SocketChannel.open(qa.getSocketAddress()));
+    		} catch(IOException ex) {
+    			logRunException(ex);
+    		}
+    	}
+    	
       }
     }
     getLogger().info("Shut down memcached client");
