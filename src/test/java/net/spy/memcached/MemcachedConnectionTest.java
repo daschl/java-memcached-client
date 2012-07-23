@@ -44,24 +44,22 @@ public class MemcachedConnectionTest extends TestCase {
    * in a safe way and operation can continue no matter what.
    */
   public void testSafeExceptionHandling() throws IOException {
-	  MockDefaultConnectionFactory cf = new MockDefaultConnectionFactory();
-	  MemcachedClient client = new MemcachedClient(cf, AddrUtil.getAddresses(TestConfig.IPV4_ADDR
-	            + ":" + TestConfig.PORT_NUMBER));
+    MockDefaultConnectionFactory cf = new MockDefaultConnectionFactory();
+	MemcachedClient client = new MemcachedClient(cf, AddrUtil.getAddresses(TestConfig.IPV4_ADDR
+	           + ":" + TestConfig.PORT_NUMBER));
+	 
 	  
-	  client.set("foo", 0, "bar");
-	  System.out.println(client.get("foo"));
-	  client.set("foo", 0, "bar");
-	  System.out.println(client.get("foo"));
-	  
-	  // throws
-	  client.set("foo", 0, "bar");
-	  
-	  System.out.println(client.get("foo"));
-	  client.set("foo", 0, "bar");
-	  System.out.println(client.get("foo"));
-	  client.set("foo", 0, "bar");
-	  System.out.println(client.get("foo"));
-	  client.set("foo", 0, "bar");
-	  System.out.println(client.get("foo"));
+    client.set("key1", 0, 1);
+    assertEquals(1, client.get("key1"));
+
+    client.set("key2", 0, 2);
+    assertEquals(2, client.get("key2"));
+
+    // throws
+    client.set("key3", 0, 3);
+    assertEquals(3, client.get("key3"));
+  
+    client.set("key4", 0, 4);
+    assertEquals(4, client.get("key4"));
   }
 }
