@@ -845,8 +845,7 @@ public class MemcachedConnection extends SpyThread {
       } catch (IllegalStateException e) {
         logRunException(e);
       } catch (Throwable e) {
-    	//logRunException(e);
-    	System.out.println(e);
+    	logRunException(e);
     	  for (MemcachedNode qa : locator.getAll()) {
     		qa.setupResend();
     		try {
@@ -861,7 +860,7 @@ public class MemcachedConnection extends SpyThread {
     getLogger().info("Shut down memcached client");
   }
 
-  private void logRunException(Exception e) {
+  private void logRunException(Throwable e) {
     if (shutDown) {
       // There are a couple types of errors that occur during the
       // shutdown sequence that are considered OK. Log at debug.
